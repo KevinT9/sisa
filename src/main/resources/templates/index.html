@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="es" data-lt-installed="true">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>SISA</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Favicons -->
+    <meta name="theme-color" content="#7952b3">
+
+    <!-- Custom styles for this template -->
+    <link th:href="@{/css/sidebars.css}" rel="stylesheet">
+    <link th:href="@{/css/carousel.css}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+</head>
+<body>
+
+<svg th:replace="fragments/sidebar :: svgIcons"></svg>
+
+<main>
+
+    <!-- Incluye el fragmento del sidebar -->
+    <div th:replace="fragments/sidebar :: sidebar"></div>
+
+    <div class="b-example-divider"></div>
+
+
+    <section class="text-center container p-0">
+        <div id="myCarousel" class="carousel slide mb-6" data-bs-ride="carousel">
+            <div class="carousel-indicators">
+                <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="0" class=""
+                        aria-label="Slide 1"></button>
+                <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="1" aria-label="Slide 2"
+                        class="active" aria-current="true"></button>
+                <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="2" aria-label="Slide 3"
+                        class=""></button>
+            </div>
+            <div class="carousel-inner">
+                <div class="carousel-item">
+                    <img src="https://larepublica.cronosmedia.glr.pe/original/2023/03/18/6415e054a1575e21f513d237.jpg"
+                         class="d-block w-200" alt="Slide 1">
+                    <div class="container">
+                        <div class="carousel-caption text-start">
+                            <h1 class="fs-1 fw-bold">Universidad Nacional Federico Villarreal</h1>
+                            <p class="opacity-75"></p>
+<!--                            <p><a class="btn btn-lg btn-primary" href="#">Sign up today</a></p>-->
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-item active">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c6/Universidad_Nacional_Federico_Villarreal%2C_Lima.jpg/1200px-Universidad_Nacional_Federico_Villarreal%2C_Lima.jpg"
+                         class="d-block w-200" alt="Slide 2">
+                    <div class="container">
+                        <div class="carousel-caption">
+<!--                            <h1>Another example headline.</h1>-->
+<!--                            <p>Some representative placeholder content for the second slide of the carousel.</p>-->
+<!--                            <p><a class="btn btn-lg btn-primary" href="#">Learn more</a></p>-->
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <img src="https://mentor.pe/wp-content/uploads/2023/11/sede-UNFV.jpg" class="d-block w-200"
+                         alt="Slide 3">
+                    <div class="container">
+                        <div class="carousel-caption text-end">
+<!--                            <h1>One more for good measure.</h1>-->
+<!--                            <p>Some representative placeholder content for the third slide of this carousel.</p>-->
+<!--                            <p><a class="btn btn-lg btn-primary" href="#">Browse gallery</a></p>-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#myCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#myCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+        <div class="row py-lg-5">
+            <div class="col-lg-6 col-md-8 mx-auto">
+                <h1 class="fw-light fw-bold">Sistema de Asistencia</h1>
+                <p class="lead text-muted">¡Bienvenido <span th:text="${user.nombre}"></span>!</p>
+                <p>
+                    <a th:href="@{/asistencia}" class="btn btn-primary my-2">Registrar Asistencia</a>
+                    <a th:href="@{/cursos}" class="btn btn-secondary my-2">Ir a Cursos</a>
+                </p>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+
+<script src="js/bootstrap.bundle.min.js"></script>
+
+<script src="js/sidebars.js"></script>
+
+
+</body>
+</html>

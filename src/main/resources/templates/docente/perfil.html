@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="es" data-lt-installed="true">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>SISA</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Favicons -->
+    <meta name="theme-color" content="#7952b3">
+
+    <!-- Custom styles for this template -->
+    <link rel="stylesheet" href="css/sidebars.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="css/perfil.css">
+
+</head>
+<body>
+
+<svg th:replace="fragments/sidebarDocente :: svgIcons"></svg>
+
+<main>
+
+    <!-- Incluye el fragmento del sidebar -->
+    <div th:replace="fragments/sidebarDocente :: sidebar"></div>
+
+    <div class="b-example-divider"></div>
+
+    <div class="container py-5 h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col col-lg-10 mb-4 mb-lg-0">
+                <div class="card mb-3" style="border-radius: .5rem;">
+                    <div class="row g-0" style="height: 600px">
+                        <div class="col-md-4 gradient-custom text-center text-white"
+                             style="border-top-left-radius: .5rem; border-bottom-left-radius: .5rem;">
+<!--                            <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava1-bg.webp"-->
+                            <img th:src="@{'data:image/jpeg;base64,' + ${user.foto}}"
+                                 th:alt="${user.nombre} + ' ' + ${user.apellido}"
+                                 class="img-fluid my-5" style="width: 240px;"/>
+                            <h5><span th:text="${user.nombre} + ' ' + ${user.apellido} ">Javier Tanta</span></h5>
+                            <p><span th:text="${user.tipoDeUsuario}">Estudiante</span></p>
+                            <a href="#" onclick="mostrarFormularioEdicion()"><i class="bi bi-pencil-square"></i></a>
+                        </div>
+                        <div class="col-md-8" id="infoUsuario">
+                            <div class="card-body p-4">
+                                <h6>Información</h6>
+                                <hr class="mt-0 mb-4">
+                                <div class="row pt-1">
+                                    <div class="col-6 mb-3">
+                                        <h6>Email</h6>
+                                        <p th:text="${user.email}" class="text-muted">info@example.com</p>
+                                    </div>
+                                    <div class="col-6 mb-3">
+                                        <h6>Celular</h6>
+                                        <p th:text="${user.celular}" class="text-muted">123 456 789</p>
+                                    </div>
+                                </div>
+                                <h6>Proyectos</h6>
+                                <hr class="mt-0 mb-4">
+<!--                                <div class="row pt-1">-->
+<!--                                    <div class="col-6 mb-3">-->
+<!--                                        <h6>Recent</h6>-->
+<!--                                        <p class="text-muted">Lorem ipsum</p>-->
+<!--                                    </div>-->
+<!--                                    <div class="col-6 mb-3">-->
+<!--                                        <h6>Most Viewed</h6>-->
+<!--                                        <p class="text-muted">Dolor sit amet</p>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+                                <div class="d-flex justify-content-start">
+                                    <a href="#!"><i class="iconPerfil bi bi-linkedin"></i></a>
+                                    <a href="#!"><i class="iconPerfil bi bi-share-fill"></i></a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Agregamos un formulario de edición oculto inicialmente -->
+                        <div class="card-body p-4 col-md-8" id="formularioEdicion" style="display: none;">
+                            <form id="formActualizar">
+                                <!-- Agrega campos de edición aquí -->
+                                <div class="mb-3">
+                                    <label class="form-label" for="nombre">Nombre: </label>
+                                    <input type="text" id="nombre" placeholder="Nuevo Nombre" required class="form-control">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label" for="apellido">Apellido: </label>
+                                    <input type="text" id="apellido" placeholder="Nuevo Apellido" required class="form-control">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label" for="celular">Celular: </label>
+                                    <input type="text" id="celular" placeholder="Nuevo Celular" required class="form-control">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label" for="foto">Foto: </label>
+                                    <input type="file" id="foto" placeholder="Nueva Foto" required class="form-control">
+                                </div>
+                                <button type="submit" id="actualizarPerfil" class="btn btn-primary">Guardar</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</main>
+
+
+<script src="js/bootstrap.bundle.min.js"></script>
+
+<script src="js/sidebars.js"></script>
+<script>
+    function mostrarFormularioEdicion() {
+        // Ocultar la información y mostrar el formulario de edición
+        document.getElementById('infoUsuario').style.display = 'none';
+        document.getElementById('formularioEdicion').style.display = 'block';
+    }
+
+    let formActualizar = document.getElementById('actualizarPerfil');
+
+    formActualizar.addEventListener("click", guardarEdicion)
+
+    function guardarEdicion(e) {
+
+        e.preventDefault();
+
+        let nombre = document.getElementById('nombre').value;
+        let apellido = document.getElementById('apellido').value;
+        let celular = document.getElementById('celular').value;
+        let foto = document.getElementById('foto').files[0];
+
+        let formData = new FormData();
+        formData.append('nombre', nombre);
+        formData.append('apellido', apellido);
+        formData.append('celular', celular);
+        formData.append('foto', foto);
+
+        fetch('../perfil/actualizar', {
+            method: 'POST',
+            body: formData,
+        })
+            .then(response => response.ok)
+            .then(data => {
+                console.log(data);
+
+                document.getElementById('infoUsuario').style.display = 'block';
+                document.getElementById('formularioEdicion').style.display = 'none';
+                location.reload()
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }
+</script>
+
+</body>
+</html>

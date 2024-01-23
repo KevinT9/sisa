@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="es" data-lt-installed="true">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>SISA</title>
+
+    <!-- Favicons -->
+    <meta name="theme-color" content="#7952b3">
+
+    <!-- Bootstrap core CSS -->
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link rel="stylesheet" th:href="@{/css/sidebars.css}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" th:href="@{/css/perfil.css}">
+
+</head>
+<body>
+
+<svg th:replace="fragments/sidebar :: svgIcons"></svg>
+
+<main>
+
+    <!-- Incluye el fragmento del sidebar -->
+    <div th:replace="fragments/sidebarAdmin :: sidebarAdmin"></div>
+
+    <div class="b-example-divider"></div>
+
+    <div class="container mx-auto" style="width: 100%; height: 100vh; display: flex; flex-direction: column;">
+
+        <div class="container mx-auto text-center text-primary align-middle">
+            <h2>Mantenimiento Clases</h2>
+            <h2>Sitio en Mantenimiento</h2>
+            <img src="https://previews.123rf.com/images/bloomua/bloomua1506/bloomua150600018/41973902-dise%C3%B1o-plano-delgada-l%C3%ADnea-de-la-p%C3%A1gina-web-en-construcci%C3%B3n-proceso-de-construcci%C3%B3n-de-la-p%C3%A1gina.jpg">
+        </div>
+
+
+    </div>
+
+
+</main>
+
+
+<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/js/sidebars.js}"></script>
+<!--<script>-->
+<!--    let registrarAsistencia = document.getElementById("registrarAsistencia");-->
+<!--    registerAsistencia.addEventListener("click", cambiarVentana)-->
+
+<!--    function cambiarVentana() {-->
+<!--        location.href = "../asistencia?curso="-->
+<!--    }-->
+
+<!--</script>-->
+
+<script>
+
+    document.querySelector('form').addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        let formData = new FormData(this);
+
+        fetch('../../api/cursos/', {
+            method: 'POST',
+            body: formData
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.text();
+            })
+            .then(data => {
+                alert('Curso agregado exitosamente');
+                window.location.reload()
+            })
+            .catch(error => {
+                // Manejar errores de la solicitud
+                console.error('There has been a problem with your fetch operation:', error);
+            });
+    });
+
+    // Captura los elementos con la clase 'btnEliminar'
+    const btnEliminarList = document.querySelectorAll('.btnEliminar');
+
+    // Itera sobre cada botón de eliminación y agrega un evento 'click'
+    btnEliminarList.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            // Obtiene el idCurso desde el atributo 'data-idcurso' del botón
+            const idCurso = e.target.getAttribute('data-idcurso');
+
+            // Confirma si realmente desea eliminar el curso
+            if (confirm('¿Estás seguro que quieres eliminar este curso?')) {
+                // Realiza la solicitud DELETE al backend para eliminar el curso
+                fetch(`../../api/cursos/${idCurso}`, {
+                    method: 'DELETE'
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.text();
+                    })
+                    .then(data => {
+                        alert('Curso eliminado exitosamente!')
+                        window.location.reload();
+                    })
+                    .catch(error => {
+                        console.error('Hubo un problema con la solicitud de eliminación:', error);
+                    });
+            }
+        });
+    });
+
+
+</script>
+
+
+</body>
+</html>

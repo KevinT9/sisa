@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="es" data-lt-installed="true">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>SISA</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Favicons -->
+    <meta name="theme-color" content="#7952b3">
+
+    <!-- Custom styles for this template -->
+    <link href="css/sidebars.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+</head>
+<body>
+
+<svg th:replace="fragments/sidebar :: svgIcons"></svg>
+
+<main>
+
+    <!-- Incluye el fragmento del sidebar -->
+    <div th:replace="fragments/sidebar :: sidebar"></div>
+
+
+    <div class="b-example-divider"></div>
+
+    <section class="py-5 text-center container overflow-auto">
+        <div class="row py-lg-5">
+            <div class="col-lg-6 col-md-8 mx-auto">
+                <h1 class="fw-light">Sistema de Asistencia</h1>
+                <p class="lead text-muted">¡Bienvenido!</p>
+                <p>
+<!--                    <a href="#" class="btn btn-primary my-2">Registrar Asistencia</a>   -->
+                    <a href="#" class="btn btn-secondary my-2">Ir a Cursos</a>
+                </p>
+            </div>
+        </div>
+    </section>
+
+
+</main>
+
+
+<script src="js/bootstrap.bundle.min.js"></script>
+
+<script th:src="@{js/sidebars.js}"></script>
+
+
+</body>
+</html>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="es" data-lt-installed="true">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>SISA</title>
+
+    <!-- Bootstrap core CSS -->
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+
+    <!-- Favicons -->
+    <meta name="theme-color" content="#7952b3">
+
+    <!-- Custom styles for this template -->
+    <link rel="stylesheet" th:href="@{/css/sidebars.css}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" th:href="@{/css/perfil.css}">
+
+</head>
+<body>
+
+<svg th:replace="fragments/sidebar :: svgIcons"></svg>
+
+<main>
+
+    <!-- Incluye el fragmento del sidebar -->
+    <div th:replace="fragments/sidebar :: sidebar"></div>
+
+    <div class="b-example-divider"></div>
+
+    <div class="container overflow-auto">
+        <div class="row mt-3">
+            <div class="col-md-12">
+                <h2 class="text-center header">Historial de asistencia</h2>
+                <p>Curso: <span th:text="${clase.cursoDocente.curso.nombreDelCurso}">Practicas pre</span> </p>
+                <p>Docente: <span th:text="${clase.cursoDocente.docente.usuario.nombre} + ' ' + ${clase.cursoDocente.docente.usuario.apellido}">Practicas pre</span> Gabino</p>
+                <p>
+                    Horario:
+                    <span th:text="${clase.dia}"></span>
+                    <span th:text="${clase.horaDeInicio}"></span>
+                    -
+                    <span th:text="${clase.horaDeFinalizacion}"></span>
+                </p>
+
+                <p id="mensaje" class="alert alert-danger" role="alert">
+                    Todavía no tiene asistencia registrada.
+                </p>
+            </div>
+        </div>
+    </div>
+
+
+
+
+</main>
+
+
+<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+
+<script th:src="@{/js/sidebars.js}"></script>
+<script>
+    function limitarSeleccion(checkbox) {
+        // Obtener la fila a la que pertenece el checkbox
+        var row = checkbox.closest('tr');
+
+        // Desmarcar otros checkboxes en la misma fila
+        row.querySelectorAll('input[type="checkbox"]').forEach(function (cb) {
+            if (cb !== checkbox) {
+                cb.checked = false;
+            }
+        });
+    }
+</script>
+
+</body>
+</html>

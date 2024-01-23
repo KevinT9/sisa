@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="es" data-lt-installed="true">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>SISA</title>
+
+    <!-- Bootstrap core CSS -->
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+
+    <!-- Favicons -->
+    <meta name="theme-color" content="#7952b3">
+
+    <!-- Custom styles for this template -->
+    <link rel="stylesheet" th:href="@{/css/sidebars.css}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" th:href="@{/css/perfil.css}">
+
+</head>
+<body>
+
+<svg th:replace="fragments/sidebar :: svgIcons"></svg>
+
+<main>
+
+    <!-- Incluye el fragmento del sidebar -->
+    <div th:replace="fragments/sidebar :: sidebar"></div>
+
+    <div class="b-example-divider"></div>
+    <div class="container marketing">
+        <div class="row m-4">
+            <div th:each="docente : ${listaDocentes}" class="col-lg-4">
+                <img th:src="@{'data:image/jpeg;base64,' + ${docente.usuario.foto}}" alt="" width="210" height="210"
+                     class="rounded-circle me-2">
+
+                <h2 th:text="${docente.usuario.nombre} + ' ' + ${docente.usuario.apellido}">Heading</h2>
+                <p>Especialización: <span th:text="${docente.especializacion}"></span> </p>
+                <p><a class="btn btn-secondary" href="#">Mostrar más detalles</a></p>
+            </div><!-- /.col-lg-4 -->
+        </div>
+    </div>
+
+</main>
+
+
+<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+
+<script th:src="@{/js/sidebars.js}"></script>
+<!--<script>-->
+<!--    let registrarAsistencia = document.getElementById("registrarAsistencia");-->
+<!--    registerAsistencia.addEventListener("click", cambiarVentana)-->
+
+<!--    function cambiarVentana() {-->
+<!--        location.href = "../asistencia?curso="-->
+<!--    }-->
+
+<!--</script>-->
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var buttons = document.querySelectorAll('.registrar-asistencia');
+        buttons.forEach(function (button) {
+            button.addEventListener('click', function () {
+                var nombreDelCurso = button.getAttribute('data-curso');
+                window.location.href = '/asistencia/' + encodeURIComponent(nombreDelCurso);
+            });
+        });
+    });
+</script>
+
+
+</body>
+</html>

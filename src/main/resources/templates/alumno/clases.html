@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="es" data-lt-installed="true">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>SISA</title>
+
+    <!-- Bootstrap core CSS -->
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+
+    <!-- Favicons -->
+    <meta name="theme-color" content="#7952b3">
+
+    <!-- Custom styles for this template -->
+    <link rel="stylesheet" th:href="@{/css/sidebars.css}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" th:href="@{/css/perfil.css}">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.css">
+    <script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.js"></script>
+
+</head>
+<body>
+
+<svg th:replace="fragments/sidebar :: svgIcons"></svg>
+
+<main>
+
+    <!-- Incluye el fragmento del sidebar -->
+    <div th:replace="fragments/sidebar :: sidebar"></div>
+
+    <div class="b-example-divider"></div>
+
+    <div class="container mt-3">
+        <div class="table-responsive">
+            <table class="table" id="table-clases">
+                <thead>
+                <tr>
+<!--                    <th scope="col">#</th>-->
+                    <th scope="col">Imagen</th>
+                    <th scope="col">Curso</th>
+                    <th scope="col">Sección</th>
+                    <th scope="col">Docente</th>
+                    <th scope="col">Día</th>
+                    <th scope="col">Hora de Inicio</th>
+                    <th scope="col">Hora de Finalización</th>
+                    <th scope="col">Turno</th>
+                    <th scope="col">Modalidad</th>
+                    <th scope="col">Ubicación</th>
+<!--                    <th scope="col">Descripción</th>-->
+                    <th scope="col">Acciones</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="clase, stat : ${consolidado}">
+<!--                    <td th:text="${stat.index + 1}"></td>-->
+                    <td>
+                        <img th:src="@{'data:image/jpeg;base64,' + ${clase.curso.fotoBase64}}" class="bd-placeholder-img card-img-top" width="100%" height="50" alt="">
+                        <span></span>
+                    </td>
+                    <td th:text="${clase.curso.nombreDelCurso}"></td>
+                    <td th:text="${clase.cursoDocente.seccion}"></td>
+                    <td th:text="${clase.cursoDocente.docente.usuario.nombre + ' ' + clase.cursoDocente.docente.usuario.apellido}"></td>
+                    <td th:text="${clase.dia}"></td>
+                    <td th:text="${clase.horaDeInicio}"></td>
+                    <td th:text="${clase.horaDeFinalizacion}"></td>
+                    <td th:text="${clase.cursoDocente.turno}"></td>
+                    <td th:text="${clase.cursoDocente.modalidad}"></td>
+                    <td th:text="${clase.ubicacion}"></td>
+<!--                    <td th:text="${clase.descripcion}"></td>-->
+                    <td>
+                        <button th:data-curso="${clase.id}" id="consultarHistorialAsistencia" type="button" class="btn btn-outline-primary consultarHistorialAsistencia">
+                            Consultar Historial
+                        </button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+    <!--    <div class="album py-5 bg-light overflow-auto" style="width: 100%;">-->
+<!--        <div class="container">-->
+<!--            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">-->
+<!--                -->
+<!--                <div th:each="listaClase : ${listasDeClases}" class="col" th:remove="tag">-->
+<!--                    <div th:each="clase : ${listaClase}" class="col">-->
+<!--                        <div class="card shadow-sm">-->
+<!--                            <img th:src="@{'data:image/jpeg;base64,' + ${clase.curso.fotoBase64}}" class="bd-placeholder-img card-img-top" width="100%"-->
+<!--                                 height="225">-->
+<!--                            <div class="card-body">-->
+<!--                                <p class="card-text text-primary fs-4 fw-bold text-center"-->
+<!--                                   th:text="${clase.curso.nombreDelCurso} + ' - ' + ${clase.cursoDocente.seccion}"></p>-->
+<!--                                <p class="fw-bold card-text">Día: <span th:text="${clase.dia}"></span></p>-->
+<!--                                <p class="card-text"><span class="fw-bold"> Hora de inicio: </span><span-->
+<!--                                        th:text="${clase.horaDeInicio}"></span></p>-->
+<!--                                <p class="card-text"><span class="fw-bold">Hora de finalización: </span><span-->
+<!--                                        th:text="${clase.horaDeFinalizacion}"></span></p>-->
+<!--                                <p class="card-text">Ubicación: <span th:text="${clase.ubicacion}"></span></p>-->
+<!--                                <p class="card-text">Descripción: <span th:text="${clase.descripcion}"></span></p>-->
+<!--                                <div class="d-flex justify-content-between align-items-center">-->
+<!--                                    <div class="btn-group">-->
+<!--                                        <button th:data-curso="${clase.id}" id="consultarHistorialAsistencia"-->
+<!--                                                type="button" class="btn btn-outline-primary consultarHistorialAsistencia">-->
+<!--                                            Consultar Historial-->
+<!--                                        </button>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+
+<!--                </div>-->
+
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+
+
+</main>
+
+
+<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+
+<script th:src="@{/js/sidebars.js}"></script>
+
+<script>
+
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const table = new DataTable('#table-clases', {
+            language: {
+                url: '//cdn.datatables.net/plug-ins/1.13.7/i18n/es-ES.json',
+            },
+        });
+
+        var buttons = document.querySelectorAll('.consultarHistorialAsistencia');
+        buttons.forEach(function (button) {
+            button.addEventListener('click', function () {
+                var nombreDelCurso = button.getAttribute('data-curso');
+                window.location.href = '/alumno/asistencia/' + encodeURIComponent(nombreDelCurso);
+            });
+        });
+    });
+</script>
+
+
+</body>
+</html>

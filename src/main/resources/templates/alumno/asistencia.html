@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="es" data-lt-installed="true">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>SISA</title>
+
+    <!-- Bootstrap core CSS -->
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+
+    <!-- Favicons -->
+    <meta name="theme-color" content="#7952b3">
+
+    <!-- Custom styles for this template -->
+    <link rel="stylesheet" th:href="@{/css/sidebars.css}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" th:href="@{/css/perfil.css}">
+
+</head>
+<body>
+
+<svg th:replace="fragments/sidebar :: svgIcons"></svg>
+
+<main>
+
+    <!-- Incluye el fragmento del sidebar -->
+    <div th:replace="fragments/sidebar :: sidebar"></div>
+
+    <div class="b-example-divider"></div>
+
+    <div class="container overflow-auto">
+        <div class="row">
+            <div class="col-md-12">
+                <h2 class="text-center header">Historial de asistencia</h2>
+                <p>Curso: <span th:text="${listaAsistencia.get(0).clase.cursoDocente.curso.nombreDelCurso}">Practicas pre</span> </p>
+                <p>Docente: <span th:text="${listaAsistencia.get(0).clase.cursoDocente.docente.usuario.nombre} + ' ' + ${listaAsistencia.get(0).clase.cursoDocente.docente.usuario.apellido}">Practicas pre</span> Gabino</p>
+                <p>
+                    Horario:
+                    <span th:text="${listaAsistencia.get(0).clase.dia}"></span>
+                    <span th:text="${listaAsistencia.get(0).clase.horaDeInicio}"></span>
+                     -
+                    <span th:text="${listaAsistencia.get(0).clase.horaDeFinalizacion}"></span>
+                </p>
+
+                <div class="table-responsive">
+                    <table class="table table-striped table-borderless border">
+                        <thead class="border-light">
+                        <tr>
+                            <th scope="col">#</th>
+<!--                            <th scope="col"><strong>Curso</strong></th>-->
+<!--                            <th scope="col"><strong>Sección</strong></th>-->
+<!--                            <th scope="col"><strong>Docente</strong></th>-->
+                            <th scope="col"><strong>Fecha y hora</strong></th>
+                            <th scope="col"><strong>Presente</strong></th>
+                            <th scope="col"><strong>Tardanza</strong></th>
+                            <th scope="col"><strong>Falta</strong></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <!-- Itera sobre la lista de usuarios desde el modelo -->
+                        <tr th:each="uList, iterStat : ${listaAsistencia}">
+                            <th scope="row" th:text="${iterStat.index + 1}"></th>
+<!--                            <td th:text="${uList.clase.cursoDocente.curso.nombreDelCurso}"></td>-->
+<!--                            <td th:text="${uList.clase.cursoDocente.seccion}"></td>-->
+<!--                            <td th:text="${uList.clase.cursoDocente.docente.usuario.nombre} + ' ' + ${uList.clase.cursoDocente.docente.usuario.apellido}"></td>-->
+                            <td th:text="${#temporals.format(uList.fechaDeAsistencia, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                            <td>
+                                <span th:if="${uList.presente}" class="bi bi-check-circle-fill text-success"></span>
+                                <span th:unless="${uList.presente}" class=""></span>
+                            </td>
+                            <td>
+                                <span th:if="${uList.tardanza}" class="bi bi-exclamation-circle-fill text-warning"></span>
+                                <span th:unless="${uList.tardanza}" class=""></span>
+                            </td>
+                            <td>
+                                <span th:if="${uList.falta}" class="bi bi-x-circle-fill text-danger"></span>
+                                <span th:unless="${uList.falta}" class=""></span>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th></th>
+                            <th>
+<!--                                <button class="btn btn-primary">Registrar</button>-->
+                            </th>
+                            <th>
+<!--                                <button class="btn btn-secondary">Limpiar</button>-->
+                            </th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+
+
+</main>
+
+
+<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+
+<script th:src="@{/js/sidebars.js}"></script>
+<script>
+    function limitarSeleccion(checkbox) {
+        // Obtener la fila a la que pertenece el checkbox
+        var row = checkbox.closest('tr');
+
+        // Desmarcar otros checkboxes en la misma fila
+        row.querySelectorAll('input[type="checkbox"]').forEach(function (cb) {
+            if (cb !== checkbox) {
+                cb.checked = false;
+            }
+        });
+    }
+</script>
+
+</body>
+</html>

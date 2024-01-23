@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="es" data-lt-installed="true">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>SISA</title>
+
+    <!-- Bootstrap core CSS -->
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+
+    <!-- Favicons -->
+    <meta name="theme-color" content="#7952b3">
+
+    <!-- Custom styles for this template -->
+    <link rel="stylesheet" th:href="@{/css/sidebars.css}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" th:href="@{/css/perfil.css}">
+
+</head>
+<body>
+
+<svg th:replace="fragments/sidebarDocente :: svgIcons"></svg>
+
+<main>
+
+    <!-- Incluye el fragmento del sidebar -->
+    <div th:replace="fragments/sidebarDocente :: sidebar"></div>
+
+    <div class="b-example-divider"></div>
+
+    <div class="album py-5 bg-light overflow-auto" style="width: 100%;">
+
+        <div class="container">
+            <form th:action="@{/crearRelacion}" method="post">
+                <div class="mb-3">
+                    <label for="idCurso" class="form-label">Seleccionar curso:</label>
+                    <select class="form-select" id="idCurso" name="idCurso" required>
+                        <option value="" selected disabled>Seleccione un curso</option>
+                        <option th:each="curso, cursoIndex : ${listaCursos}" th:value="${curso.id}"
+                                th:text="${curso.nombreDelCurso} + ' - ' + ${listaCursosDocentes[__${cursoIndex.index}__].seccion}"></option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="nombre" class="form-label">Nombre:</label>
+                    <input type="text" class="form-control" id="nombre" name="nombre" required>
+                </div>
+                <div class="mb-3">
+                    <label for="apellido" class="form-label">Apellido:</label>
+                    <input type="text" class="form-control" id="apellido" name="apellido" required>
+                </div>
+                <div class="mb-3">
+                    <label for="genero" class="form-label">Género:</label>
+                    <select class="form-select" id="genero" name="genero" required>
+                        <option value="" selected disabled>Selecciona tu género</option>
+                        <option value="masculino">Masculino</option>
+                        <option value="femenino">Femenino</option>
+                        <option value="otro">Otro</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="email" class="form-label">Correo electrónico:</label>
+                    <input type="email" class="form-control" id="email" name="email" required>
+                </div>
+                <div class="mb-3">
+                    <label for="celular" class="form-label">Número de celular:</label>
+                    <input type="text" class="form-control" id="celular" name="celular" required>
+                </div>
+                <div class="mb-3">
+                    <label for="dni" class="form-label">DNI:</label>
+                    <input type="text" class="form-control" id="dni" name="dni" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Guardar</button>
+            </form>
+
+        </div>
+    </div>
+
+
+</main>
+
+
+<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+
+<script th:src="@{/js/sidebars.js}"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var buttons = document.querySelectorAll('.registrar-asistencia');
+        buttons.forEach(function (button) {
+            button.addEventListener('click', function () {
+                var nombreDelCurso = button.getAttribute('data-curso');
+                window.location.href = '/docente/asistencia/' + encodeURIComponent(nombreDelCurso);
+            });
+        });
+    });
+</script>
+
+
+</body>
+</html>

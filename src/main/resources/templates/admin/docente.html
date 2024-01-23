@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="es" data-lt-installed="true">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>SISA</title>
+
+
+    <!-- Favicons -->
+    <meta name="theme-color" content="#7952b3">
+
+    <!-- Bootstrap core CSS -->
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link rel="stylesheet" th:href="@{/css/sidebars.css}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" th:href="@{/css/perfil.css}">
+
+</head>
+<body>
+
+<svg th:replace="fragments/sidebar :: svgIcons"></svg>
+
+<main>
+
+    <!-- Incluye el fragmento del sidebar -->
+    <div th:replace="fragments/sidebarAdmin :: sidebarAdmin"></div>
+
+    <div class="b-example-divider"></div>
+    <div class="container mx-auto" style="width: 100%; height: 100vh; display: flex; flex-direction: column;">
+
+        <div class="container mx-auto text-center text-primary align-middle">
+            <h2>Mantenimiento Docentes</h2>
+        </div>
+
+        <!-- Formulario para añadir un nuevo docente -->
+        <form th:action="@{/agregarDocente}" method="post" enctype="multipart/form-data">
+            <div class="mb-3">
+                <label for="nombre" class="form-label">Nombre:</label>
+                <input type="text" class="form-control" id="nombre" name="nombre" required>
+            </div>
+            <div class="mb-3">
+                <label for="apellido" class="form-label">Apellido:</label>
+                <input type="text" class="form-control" id="apellido" name="apellido" required>
+            </div>
+            <input type="hidden" id="tipoUsuario" name="tipoUsuario" value="Docente">
+            <div class="mb-3">
+                <label for="email" class="form-label">Email:</label>
+                <input type="email" class="form-control" id="email" name="email" required>
+            </div>
+            <div class="mb-3">
+                <label for="celular" class="form-label">Celular:</label>
+                <input type="text" class="form-control" id="celular" name="celular" required>
+            </div>
+            <div class="mb-3">
+                <label for="especializacion" class="form-label">Especialización:</label>
+                <input type="text" class="form-control" id="especializacion" name="especializacion" required>
+            </div>
+            <div class="mb-3">
+                <label for="foto" class="form-label">Foto:</label>
+                <input type="file" class="form-control" id="foto" name="foto" accept="image/*" required>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Agregar Docente</button>
+        </form>
+
+        <div class="table-container overflow-auto overflow-y-auto">
+            <table class="table mt-4">
+                <thead>
+                <tr>
+                    <th class="text-center align-middle">ID</th>
+                    <th class="text-center align-middle">Foto</th>
+                    <th class="text-center align-middle">Nombre</th>
+                    <th class="text-center align-middle">Especialización</th>
+                    <th class="text-center align-middle">Acciones</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="docente : ${listaDocentes}" class="text-center">
+                    <td class="align-middle">
+                        <span class="fs-4 fw-bold" th:text="${docente.usuario.id}">1</span>
+                    </td>
+                    <td class="align-middle">
+                        <img th:src="@{'data:image/jpeg;base64,' + ${docente.usuario.foto}}" alt="" width="80"
+                             height="80" class="rounded-circle me-2">
+                    </td>
+                    <td class="align-middle">
+                        <p class="fs-4 fw-bold" th:text="${docente.usuario.nombre} + ' ' + ${docente.usuario.apellido}">
+                            Heading</p>
+                    </td>
+                    <td class="align-middle">
+                        <p>Especialización: <span th:text="${docente.especializacion}"></span></p>
+                    </td>
+                    <td class="align-middle">
+                        <p>
+                            <a class="btn btn-secondary" href="#">Mostrar más detalles</a>
+                            <a class="btn btn-warning" href="#">Editar</a>
+                            <a class="btn btn-danger" href="#">Eliminar</a>
+                        </p>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+
+
+</main>
+
+
+<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/js/sidebars.js}"></script>
+
+<script>
+
+    // Obtener el formulario
+    const form = document.querySelector('form');
+
+    // Manejar el evento de envío del formulario
+    form.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        // Crear un objeto FormData para enviar los datos del formulario
+        const formData = new FormData(form);
+
+        // Realizar la solicitud POST con fetch
+        fetch('../../api/docente/', {
+            method: 'POST',
+            body: formData
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.text();
+            })
+            .then(data => {
+                // Manejar la respuesta si es necesario
+                console.log(data);
+                // Por ejemplo, podrías mostrar un mensaje de éxito al usuario
+                alert('Docente agregado exitosamente');
+                // Limpiar el formulario o realizar otras acciones después del éxito
+                window.location.reload()
+            })
+            .catch(error => {
+                // Manejar errores de la solicitud
+                console.error('Hubo un problema con tu solicitud fetch:', error);
+                // Podrías mostrar un mensaje de error al usuario si es necesario
+                alert('Hubo un problema al agregar al docente. Por favor, inténtalo de nuevo.');
+            });
+    });
+
+</script>
+
+
+</body>
+</html>

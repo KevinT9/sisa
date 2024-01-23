@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="es" data-lt-installed="true">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>SISA</title>
+
+    <!-- Bootstrap core CSS -->
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+
+    <!-- Favicons -->
+    <meta name="theme-color" content="#7952b3">
+
+    <!-- Custom styles for this template -->
+    <link rel="stylesheet" th:href="@{/css/sidebars.css}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" th:href="@{/css/perfil.css}">
+
+</head>
+<body>
+
+<svg th:replace="fragments/sidebarDocente :: svgIcons"></svg>
+
+<main>
+
+    <!-- Incluye el fragmento del sidebar -->
+    <div th:replace="fragments/sidebarDocente :: sidebar"></div>
+
+    <div class="b-example-divider"></div>
+
+    <div class="container overflow-auto">
+        <div class="row mt-3">
+            <div class="col-md-12">
+
+                <input type="hidden" id="idClase" th:value="${listaAsistencias.get(0).clase.id}">
+
+                <h2 class="text-center header">REGISTRAR ASISTENCIA</h2>
+                <p>Curso: <span th:text="${listaAsistencias.get(0).clase.curso.nombreDelCurso}">Practicas pre</span> </p>
+                <p>Sección: <span th:text="${listaAsistencias.get(0).clase.cursoDocente.seccion}">A</span> </p>
+                <p>Docente: <span th:text="${listaAsistencias.get(0).clase.docente.usuario.nombre + ' ' + listaAsistencias.get(0).clase.docente.usuario.apellido}"></span> </p>
+                <p>Horario: <span th:text="${listaAsistencias.get(0).clase.dia + ' ' + listaAsistencias.get(0).clase.horaDeInicio + ' a ' + listaAsistencias.get(0).clase.horaDeFinalizacion}">Viernes 10:00 a.m. a 12:00 p.m.</span>  </p>
+
+                <div class="form-check form-switch d-flex align-content-center p-0">
+                    <label class="form-check-label me-3 fw-bold fs-4" for="descargarReporte">¿Descargar reporte?</label>
+                    <input class="form-check-input fs-4 mx-0" type="checkbox" id="descargarReporte">
+                </div>
+
+                <div class="mt-4 table-responsive">
+                    <table class="table table-striped table-borderless border">
+                        <thead class="border-light">
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col"><strong>Apellidos y Nombres</strong></th>
+                            <th scope="col"><strong>Email</strong></th>
+                            <th scope="col"><strong>Presente</strong></th>
+                            <th scope="col"><strong>Tardanza</strong></th>
+                            <th scope="col"><strong>Falta</strong></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <!-- Itera sobre la lista de usuarios desde el modelo -->
+                        <tr th:each="uList, iterStat : ${listaAsistencias}">
+                            <th scope="row" th:text="${iterStat.index + 1}"></th>
+                            <td th:text="${uList.usuario.nombre} + ' ' + ${uList.usuario.apellido}"></td>
+                            <td th:text="${uList.usuario.email}"></td>
+                            <td><input type="checkbox" name="presente" onclick="limitarSeleccion(this, 'presente')" th:checked="${uList.presente}"></td>
+                            <td><input type="checkbox" name="tardanza" onclick="limitarSeleccion(this, 'tardanza')" th:checked="${uList.tardanza}"></td>
+                            <td><input type="checkbox" name="falta" onclick="limitarSeleccion(this, 'falta')" th:checked="${uList.falta}"></td>
+                        </tr>
+
+                        <tr>
+                            <th></th>
+                            <th>
+                                <button id="registrarBtn" class="btn btn-primary">Registrar</button>
+                            </th>
+                            <th>
+                                <button id="limpiarBtn" class="btn btn-secondary">Limpiar</button>
+                            </th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para mostrar mensajes -->
+    <div class="modal fade" id="mensajeModal" tabindex="-1" aria-labelledby="mensajeModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="mensajeModalLabel">Mensaje</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="mensajeModalBody">
+                    <!-- Aquí se mostrará el mensaje -->
+                </div>
+                <div class="modal-footer">
+                    <button id="cerrarModal" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</main>
+
+
+<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+
+<script th:src="@{/js/sidebars.js}"></script>
+<script>
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const registrarBtn = document.getElementById('registrarBtn');
+        const limpiarBtn = document.getElementById('limpiarBtn');
+        const cerrarModal = document.getElementById('cerrarModal');
+
+        registrarBtn.addEventListener('click', () => {
+
+
+            // Obtener datos de la tabla para enviar al servidor
+            const tablaUsuarios = document.querySelectorAll('tbody tr');
+
+            const datosUsuarios = Array.from(tablaUsuarios).map(tr => {
+                const idClase = document.getElementById("idClase").value
+                const nombreCompleto = tr.children[1].textContent.trim(); // Obtener el nombre y apellido
+                const email = tr.children[2].textContent.trim(); // Obtener el email
+                let presente = false;
+                let tardanza = false;
+                let falta = false;
+
+                // Verificar los checkboxes y asegurarse de que solo uno esté seleccionado por fila
+                const checkboxes = tr.querySelectorAll('input[type="checkbox"]');
+                checkboxes.forEach(checkbox => {
+                    const isChecked = checkbox.checked;
+                    const name = checkbox.getAttribute('name');
+
+                    if (isChecked) {
+                        // Si este checkbox está seleccionado, deseleccionar los demás de la fila
+                        if (name === 'presente') {
+                            presente = true;
+                            tardanza = false;
+                            falta = false;
+                        } else if (name === 'tardanza') {
+                            presente = false;
+                            tardanza = true;
+                            falta = false;
+                        } else if (name === 'falta') {
+                            presente = false;
+                            tardanza = false;
+                            falta = true;
+                        }
+                    }
+                });
+
+                return { idClase, nombreCompleto, email, presente, tardanza, falta };
+            });
+
+            const descargarReporteCheckbox = document.getElementById("descargarReporte");
+            const descargarReporte = descargarReporteCheckbox.checked;
+
+            const headers = {
+                'Content-Type': 'application/json',
+                'Descargar-Reporte': descargarReporte.toString()
+            };
+
+            fetch('/api/alumno/guardarAsistencia', {
+                method: 'POST',
+                headers: headers,
+                body: JSON.stringify(datosUsuarios),
+                responseType: 'blob'
+            })
+                .then(response => {
+                    if (response.ok) {
+                        if (descargarReporte) {
+                            return response.blob();
+                        } else {
+                            console.log('No se generará el reporte');
+                        }
+                        document.getElementById('mensajeModalBody').innerHTML = '¡Asistencia guardada correctamente!';
+                        const mensajeModal = new bootstrap.Modal(document.getElementById('mensajeModal'));
+                        mensajeModal.show();
+                    } else {
+                        throw new Error('Error al enviar los datos');
+                    }
+                })
+                .then(blob => {
+
+                    if (descargarReporte) {
+                        const url = URL.createObjectURL(blob);
+                        const a = document.createElement('a');
+                        a.href = url;
+                        a.download = 'asistencias.xlsx';
+                        document.body.appendChild(a);
+                        a.click();
+                        document.body.removeChild(a);
+                        URL.revokeObjectURL(url);
+                    }
+                    document.getElementById('mensajeModalBody').innerHTML = '¡Asistencia guardada correctamente!';
+                    const mensajeModal = new bootstrap.Modal(document.getElementById('mensajeModal'));
+                    mensajeModal.show();
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    // Mostrar mensaje de error en el modal
+                    document.getElementById('mensajeModalBody').innerHTML = 'Hubo un error al guardar la asistencia.';
+                    const mensajeModal = new bootstrap.Modal(document.getElementById('mensajeModal'));
+                    mensajeModal.show();
+                });
+
+        });
+
+        limpiarBtn.addEventListener('click', () => {
+            window.location.reload();
+        });
+
+        cerrarModal.addEventListener('click', () => {
+            window.location.reload();
+        });
+    });
+
+
+    function limitarSeleccion(checkbox) {
+        // Obtener la fila a la que pertenece el checkbox
+        var row = checkbox.closest('tr');
+
+        // Desmarcar otros checkboxes en la misma fila
+        row.querySelectorAll('input[type="checkbox"]').forEach(function (cb) {
+            if (cb !== checkbox) {
+                cb.checked = false;
+            }
+        });
+    }
+</script>
+
+</body>
+</html>

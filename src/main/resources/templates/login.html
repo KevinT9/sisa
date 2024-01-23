@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <link rel="stylesheet" th:href="@{/css/login.css}">
+
+</head>
+<body>
+<div class="container" id="container">
+    <div class="form-container sign-up-container">
+        <form th:action="@{/registrarse}" method="post">
+            <h1>Crear una cuenta</h1>
+            <div class="social-container">
+
+            </div>
+            <!--            <span>or use your email for registration</span>-->
+            <input name="nombre" id="nombre" type="text" placeholder="Nombres"/>
+            <input name="apellido" id="apellido" type="text" placeholder="Apellidos"/>
+            <input name="email" id="email" type="email" placeholder="Email"/>
+            <input name="dni" id="dni" type="number" placeholder="DNI"/>
+            <select name="genero" id="genero" class="select-css">
+                <option value="seleccionar">Seleccionar Genero</option>
+                <option value="masculino">Masculino</option>
+                <option value="femenino">Femenino</option>
+                <option value="otro">Otro</option>
+            </select>
+            <input name="password" type="password" placeholder="Password"/>
+            <button>Registrarse</button>
+        </form>
+    </div>
+    <div class="form-container sign-in-container">
+        <form th:action="@{/login}" method="post">
+            <h1>Iniciar Sesión</h1>
+            <div class="social-container">
+
+            </div>
+            <!--            <span>or use your account</span>-->
+            <input name="username" id="username" type="text" placeholder="Email"/>
+            <input name="password" id="password" type="password" placeholder="Password"/>
+            <a href="#">¿Olvidaste la contraseña?</a>
+            <button>Ingresar</button>
+        </form>
+    </div>
+    <div class="overlay-container">
+        <div class="overlay">
+            <div class="overlay-panel overlay-left">
+                <h1>Bienvenido al Sistema de Asistencia</h1>
+                <p>¿Ya tienes una cuenta?</p>
+                <button class="ghost" id="signIn">Ingresar</button>
+            </div>
+            <div class="overlay-panel overlay-right">
+                <h1>Bienvenido al Sistema de Asistencia</h1>
+                <p>¿No tienes una cuenta?</p>
+                <button class="ghost" id="signUp">Registrarse</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script th:src="@{/js/login.js}"></script>
+<script>
+    // Función para enviar el formulario de registro
+    function enviarRegistro(event) {
+        event.preventDefault(); // Evitar el envío predeterminado del formulario
+
+        const nombre = document.getElementById('nombre').value;
+        const apellido = document.getElementById('apellido').value;
+        const genero = document.getElementById('genero').value;
+        const email = document.getElementById('email').value;
+        const dni = document.getElementById('dni').value;
+        const password = document.getElementsByName('password')[0].value;
+
+        const formData = new FormData();
+        formData.append('nombre', nombre);
+        formData.append('apellido', apellido);
+        formData.append('dni', dni);
+        formData.append('genero', genero);
+        formData.append('email', email);
+        formData.append('password', password);
+
+        fetch('./registrarse', {
+            method: 'POST',
+            body: formData
+        })
+            .then(response => {
+                console.log(response)
+                window.location.href = 'http://localhost:8080/'
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }
+
+    // Función para enviar el formulario de inicio de sesión
+    function enviarInicioSesion(event) {
+        event.preventDefault(); // Evitar el envío predeterminado del formulario
+
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+
+        const formData = new FormData();
+        formData.append('username', username);
+        formData.append('password', password);
+
+        fetch('/login', {
+            method: 'POST',
+            body: formData
+        })
+            .then(response => {
+                // Manejar la respuesta aquí
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }
+
+    // Agregar manejadores de eventos a los botones de los formularios
+    document.querySelector('.form-container.sign-up-container button').addEventListener('click', enviarRegistro);
+    // document.querySelector('.form-container.sign-in-container button').addEventListener('click', enviarInicioSesion);
+</script>
+
+</body>
+</html>
