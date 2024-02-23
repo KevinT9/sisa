@@ -38,6 +38,8 @@
                         <div class="card-body">
                             <p class="card-text" th:text="${cursoDocente.curso.nombreDelCurso}"></p>
                             <p>Sección: <span class="card-text" th:text="${cursoDocente.seccion}">D</span></p>
+                            <p>Turno: <span class="card-text" th:text="${cursoDocente.turno}">D</span></p>
+                            <p>Modalidad: <span class="card-text" th:text="${cursoDocente.modalidad}">D</span></p>
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="btn-group">
                                     <a th:href="@{/docente/clases/__${cursoDocente.id}__}" type="button" class="btn btn-outline-primary">Mostrar Horarios</a>

@@ -100,25 +100,11 @@
             </a>
         </li>
         <li>
-            <a th:href="@{/admin/asignarDocente}" class="nav-link" th:classappend="${#httpServletRequest.requestURI == '/admin/asignarDocente' ? 'active' : 'text-white'}">
-                <i class="bi bi-check2 me-2"></i>
-                Asignar Docente
-            </a>
-        </li>
-        <li>
             <a th:href="@{/admin/cursos}" class="nav-link" th:classappend="${#httpServletRequest.requestURI == '/admin/cursos' ? 'active' : 'text-white'}">
                 <i class="bi bi-journal-text me-2"></i>
                 Cursos
             </a>
         </li>
-<!--        <li>-->
-<!--            <a th:href="@{/admin/clases}" class="nav-link" th:classappend="${#httpServletRequest.requestURI == '/admin/clases' ? 'active' : 'text-white'}">-->
-<!--                <svg class="bi me-2" width="16" height="16">-->
-<!--                    <use xlink:href="#grid"></use>-->
-<!--                </svg>-->
-<!--                Clases-->
-<!--            </a>-->
-<!--        </li>-->
         <li>
             <a th:href="@{/admin/docente}" class="nav-link" th:classappend="${#httpServletRequest.requestURI == '/admin/docente' ? 'active' : 'text-white'}">
                 <svg class="bi me-2" width="16" height="16">
@@ -128,27 +114,34 @@
             </a>
         </li>
         <li>
+            <a th:href="@{/admin/asignarDocente}" class="nav-link" th:classappend="${#httpServletRequest.requestURI == '/admin/asignarDocente' ? 'active' : 'text-white'}">
+                <i class="bi bi-check2 me-2"></i>
+                Asignar Docente
+            </a>
+        </li>
+
+        <li>
             <a th:href="@{/admin/matricula}" class="nav-link" th:classappend="${#httpServletRequest.requestURI == '/admin/matricula' ? 'active' : 'text-white'}">
                 <i class="bi bi-r-circle me-2"></i>
                 Matricula
             </a>
         </li>
-        <li>
-            <a th:href="@{/alumno}" class="nav-link" th:classappend="${#httpServletRequest.requestURI == '/alumno' ? 'active' : 'text-white'}">
-                <svg class="bi me-2" width="16" height="16">
-                    <use xlink:href="#people-circle"></use>
-                </svg>
-                Modulo Alumno
-            </a>
-        </li>
-        <li>
-            <a th:href="@{/docente}" class="nav-link" th:classappend="${#httpServletRequest.requestURI == '/docente' ? 'active' : 'text-white'}">
-                <svg class="bi me-2" width="16" height="16">
-                    <use xlink:href="#people-circle"></use>
-                </svg>
-                Modulo Docente
-            </a>
-        </li>
+<!--        <li>-->
+<!--            <a th:href="@{/alumno}" class="nav-link" th:classappend="${#httpServletRequest.requestURI == '/alumno' ? 'active' : 'text-white'}">-->
+<!--                <svg class="bi me-2" width="16" height="16">-->
+<!--                    <use xlink:href="#people-circle"></use>-->
+<!--                </svg>-->
+<!--                Modulo Alumno-->
+<!--            </a>-->
+<!--        </li>-->
+<!--        <li>-->
+<!--            <a th:href="@{/docente}" class="nav-link" th:classappend="${#httpServletRequest.requestURI == '/docente' ? 'active' : 'text-white'}">-->
+<!--                <svg class="bi me-2" width="16" height="16">-->
+<!--                    <use xlink:href="#people-circle"></use>-->
+<!--                </svg>-->
+<!--                Modulo Docente-->
+<!--            </a>-->
+<!--        </li>-->
     </ul>
     <hr>
     <div class="dropdown">

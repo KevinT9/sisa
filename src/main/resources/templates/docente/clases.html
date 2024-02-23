@@ -15,6 +15,9 @@
     <link rel="stylesheet" th:href="@{/css/sidebars.css}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link rel="stylesheet" th:href="@{/css/perfil.css}">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.css">
+    <script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.js"></script>
 
 </head>
 <body>
@@ -98,31 +101,79 @@
             </div>
         </div>
 
-
-
-        <div class="container">
-            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-                <div th:each="clase : ${listaClases}" class="col">
-                    <div class="card shadow-sm">
-                        <img th:src="@{'data:image/jpeg;base64,' + ${clase.curso.fotoBase64}}" class="bd-placeholder-img card-img-top" width="100%" height="225">
-                        <div class="card-body">
-                            <p class="card-text text-primary fs-4 fw-bold text-center" th:text="${clase.curso.nombreDelCurso + ' - ' + clase.cursoDocente.seccion}"></p>
-                            <p class="card-text">Descripción: <span th:text="${clase.descripcion}"></span></p>
-                            <p class="card-text">Día: <span th:text="${clase.dia}"></span></p>
-                            <p class="card-text">Hora de inicio: <span th:text="${clase.horaDeInicio}"></span></p>
-                            <p class="card-text">Hora de finalización: <span th:text="${clase.horaDeFinalizacion}"></span></p>
-                            <p class="card-text">Ubicación: <span th:text="${clase.ubicacion}"></span></p>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div class="btn-group">
-                                    <button th:data-clase="${clase.id}" id="registrarAsistencia" type="button" class="btn btn-outline-primary registrar-asistencia">Registrar Asistencia
-                                    </button>
-                                </div>
+        <div class="container mt-3">
+            <div class="table-responsive">
+                <table class="table" id="table-clases">
+                    <thead>
+                    <tr>
+                        <!--                    <th scope="col">#</th>-->
+                        <th scope="col">Imagen</th>
+                        <th scope="col">Curso</th>
+                        <th scope="col">Sección</th>
+                        <th scope="col">Docente</th>
+                        <th scope="col">Día</th>
+                        <th scope="col">Hora de Inicio</th>
+                        <th scope="col">Hora de Finalización</th>
+                        <th scope="col">Turno</th>
+                        <th scope="col">Modalidad</th>
+                        <th scope="col">Ubicación</th>
+                        <!--                    <th scope="col">Descripción</th>-->
+                        <th scope="col">Acciones</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="clase, stat : ${listaClases}">
+                        <!--                    <td th:text="${stat.index + 1}"></td>-->
+                        <td>
+                            <img th:src="@{'data:image/jpeg;base64,' + ${clase.curso.fotoBase64}}" class="bd-placeholder-img card-img-top" width="100%" height="50" alt="">
+                            <span></span>
+                        </td>
+                        <td th:text="${clase.curso.nombreDelCurso}"></td>
+                        <td th:text="${clase.cursoDocente.seccion}"></td>
+                        <td th:text="${clase.cursoDocente.docente.usuario.nombre + ' ' + clase.cursoDocente.docente.usuario.apellido}"></td>
+                        <td th:text="${clase.dia}"></td>
+                        <td th:text="${clase.horaDeInicio}"></td>
+                        <td th:text="${clase.horaDeFinalizacion}"></td>
+                        <td th:text="${clase.cursoDocente.turno}"></td>
+                        <td th:text="${clase.cursoDocente.modalidad}"></td>
+                        <td th:text="${clase.ubicacion}"></td>
+                        <!--                    <td th:text="${clase.descripcion}"></td>-->
+                        <td>
+                            <div class="btn-group">
+                                <button th:data-clase="${clase.id}" id="registrarAsistencia" type="button" class="btn btn-outline-primary registrar-asistencia">Registrar Asistencia
+                                </button>
                             </div>
-                        </div>
-                    </div>
-                </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
+
+
+<!--        <div class="container">-->
+<!--            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">-->
+<!--                <div th:each="clase : ${listaClases}" class="col">-->
+<!--                    <div class="card shadow-sm">-->
+<!--                        <img th:src="@{'data:image/jpeg;base64,' + ${clase.curso.fotoBase64}}" class="bd-placeholder-img card-img-top" width="100%" height="225">-->
+<!--                        <div class="card-body">-->
+<!--                            <p class="card-text text-primary fs-4 fw-bold text-center" th:text="${clase.curso.nombreDelCurso + ' - ' + clase.cursoDocente.seccion}"></p>-->
+<!--                            <p class="card-text">Descripción: <span th:text="${clase.descripcion}"></span></p>-->
+<!--                            <p class="card-text">Día: <span th:text="${clase.dia}"></span></p>-->
+<!--                            <p class="card-text">Hora de inicio: <span th:text="${clase.horaDeInicio}"></span></p>-->
+<!--                            <p class="card-text">Hora de finalización: <span th:text="${clase.horaDeFinalizacion}"></span></p>-->
+<!--                            <p class="card-text">Ubicación: <span th:text="${clase.ubicacion}"></span></p>-->
+<!--                            <div class="d-flex justify-content-between align-items-center">-->
+<!--                                <div class="btn-group">-->
+<!--                                    <button th:data-clase="${clase.id}" id="registrarAsistencia" type="button" class="btn btn-outline-primary registrar-asistencia">Registrar Asistencia-->
+<!--                                    </button>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
     </div>
 
 
@@ -136,6 +187,14 @@
 <script>
 
     document.addEventListener('DOMContentLoaded', () => {
+
+        const table = new DataTable('#table-clases', {
+            language: {
+                url: '//cdn.datatables.net/plug-ins/1.13.7/i18n/es-ES.json',
+            },
+        });
+
+
         const botonesAsistencia = document.querySelectorAll('.registrar-asistencia');
 
         botonesAsistencia.forEach(boton => {
